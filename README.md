@@ -18,6 +18,7 @@ The function create_lookup_tables create two dictionaries:
 - vocab_to_int : a dictionary to go from the words to an id
 - int_to_vocab : a dictionary to go from the id to word
 The function create_lookup_tables return these dictionaries as a tuple (vocab_to_int, int_to_vocab)
+
 ### Batching Data
 1. Data into sequences
 The function batch_data breaks up word id's into the appropriate sequence lengths, such that only complete sequence lengths are constructed.
@@ -32,7 +33,7 @@ data_loader = torch.utils.data.DataLoader(data,
 Finally, batch_data returns a DataLoader for the batched training data.
 
 ### RNN & LSTM Implementation 
-[RNN/LSTM](decoder2.png)
+![RNN/LSTM](decoder.png)
 - The RNN class has complete __init__, forward , and init_hidden functions.
  * __init__ - The initialize function.
  * init_hidden - The initialization function for an LSTM/GRU hidden state
