@@ -1,9 +1,8 @@
 # TV-Script-Generation
-Recurrent networks to generate new text from TV scripts; LSTM(long short-term memory) networks with PyTorch.
-Applied RNN to generate a new, "fake" Seinfeld TV scripts using RNNs from the reconized patterns while training the Seinfeld dataset of scripts from 9 seasons. 
-Dataset Stats from Kaggle [Seinfeld Chronicles](https://www.kaggle.com/thec03u5/seinfeld-chronicles#scripts.csv)
+This project applied RNN to generate a new, "fake" Seinfeld TV scripts using RNNs from the recognized patterns while training the Seinfeld dataset of scripts from 9 seasons TV series. 
+Dataset Stats are available from Kaggle [Seinfeld Chronicles](https://www.kaggle.com/thec03u5/seinfeld-chronicles#scripts.csv)
 ## Background 
-* RNN , Recurrent Neural Networks (RNNs), which are machine learning models that are able to recognize and act on sequences of inputs.
+* RNN(Recurrent Neural Networks): a deep learning models that are able to recognize and act on sequences of inputs.
 * LSTM: Long Short-Term Memory Networks (LSTM), which forms a memory about a sequence of inputs, over time.
 
 ## Implementation Approach
@@ -11,7 +10,7 @@ Dataset Stats from Kaggle [Seinfeld Chronicles](https://www.kaggle.com/thec03u5/
 Dataset Stats from Kaggle [Seinfeld Chronicles](https://www.kaggle.com/thec03u5/seinfeld-chronicles#scripts.csv)
 * the number of unique words: 46k
 * Number of lines: 109k
-* Average number of words in each line: 5.54
+* Average number of words in each line: roughly 5.54 unique vocabularies per line 
 
 ### Pre-processing Data 
 The function create_lookup_tables create two dictionaries:
@@ -22,7 +21,7 @@ The function create_lookup_tables return these dictionaries as a tuple (vocab_to
 ### Batching Data
 1. Data into sequences
 The function batch_data breaks up word id's into the appropriate sequence lengths, such that only complete sequence lengths are constructed.
-2. Cpmverting Data into TensorDataset
+2. Converting Data into TensorDataset
 In the function batch_data, data is converted into Tensors and formatted with TensorDataset.
 ```python
 data = TensorDataset(feature_tensors, target_tensors)
@@ -39,10 +38,10 @@ Finally, batch_data returns a DataLoader for the batched training data.
  * init_hidden - The initialization function for an LSTM/GRU hidden state
  * forward - Forward propagation function.
 - This RNN model implemented LSTM as memory cell and fully-connected layer to generate new vocabs
-- Lastly, trained recurrent neural networks to generate new characters,words, and bodies of text.
+- Lastly, trained recurrent neural networks to generate new words, and bodies of text.
 The initialize function creates the layers of the neural network and save them to the class. 
-The forward propagation function uses these layers to run forward propagation and generates an output and a hidden state.
-The output of this model is the last batch of word scores after a complete sequence has been processed. For each input sequence of words, the output is the word scores for a single, next word.
+The forward propagation function uses these initialized layers to run forward propagation and generates an output and a hidden state.
+The output of this model is the last batch of word scores after a complete sequence has been processed. For each input sequence of words, the output is the word scores for a single, next word. 
 ```python
 lstm_output = lstm_output.contiguous().view(-1, self.hidden_dim)
 # the last batch of word scores by shaping the output of the final, fully-connected layer
@@ -71,7 +70,9 @@ loss = forward_back_prop(decoder, decoder_optimizer, criterion, inp, target)
     * learning_rate: learning rate for Adam optimizer , started 0.001
     * num_epochs :the number of iteration to train in order to get near a minimum in the training loss
     * batch_size: large enough to train efficiently, but small enough to fit the data in memory but not to over GPU capacity. tried 64, 128
- 
+All parameters need to be optimized for better performance and efficient computing to fit in the memory, however, I'd like to mention one parameter , sequence_length, since it determine the size of the long range dependencies that a model can learn. The more, the better new sentences look make sense. In practice, to generate sentences from novel, 100 sequence were used/recommended but because of the memory warning , I set it to 10 since average word per line was 5.5/line
+### Model performance 
+The average loss is less than 3.5 
 ### Embeddings & Tockenization/Punctuation processing 
  embeddings in neural networks by implementing a word2vec model that converts words into a representative vector of numerical values.
 
