@@ -20,13 +20,6 @@ The function create_lookup_tables return these dictionaries as a tuple (vocab_to
 2. Tokenize Punctuation 
 After splitting the script into a word array using spaces as delimiters punctuations like periods and exclamation marks should be processed in order to create multiple ids for the same word. For example, "bye" and "bye!" would generate two different word ids.
 Implemented the function token_lookup to return a dictionary that is used to tokenize symbols like "!" into "||Exclamation_Mark||" in a key and a value pair.
-3. DataLoader 
-Used TensorData with DataLoader in Pytorch to handle batching , suffling and iterations. 
-```python
-data = TensorDataset(feature_tensors, target_tensors)
-data_loader = torch.utils.data.DataLoader(data, 
-                                          batch_size=batch_size)
-```
 
 ### Batching Data
 1. Data into sequences
