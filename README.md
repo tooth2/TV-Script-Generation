@@ -13,10 +13,20 @@ Dataset Stats from Kaggle [Seinfeld Chronicles](https://www.kaggle.com/thec03u5/
 * Average number of words in each line: roughly 5.54 unique vocabularies per line 
 
 ### Pre-processing Data 
-The function create_lookup_tables create two dictionaries:
+1. The function create_lookup_tables create two dictionaries:
 - vocab_to_int : a dictionary to go from the words to an id
 - int_to_vocab : a dictionary to go from the id to word
 The function create_lookup_tables return these dictionaries as a tuple (vocab_to_int, int_to_vocab)
+2. Tokenize Punctuation 
+After splitting the script into a word array using spaces as delimiters punctuations like periods and exclamation marks should be processed in order to create multiple ids for the same word. For example, "bye" and "bye!" would generate two different word ids.
+Implemented the function token_lookup to return a dictionary that is used to tokenize symbols like "!" into "||Exclamation_Mark||" in a key and a value pair.
+3. DataLoader 
+Used TensorData with DataLoader in Pytorch to handle batching , suffling and iterations. 
+```python
+data = TensorDataset(feature_tensors, target_tensors)
+data_loader = torch.utils.data.DataLoader(data, 
+                                          batch_size=batch_size)
+```
 
 ### Batching Data
 1. Data into sequences
@@ -71,9 +81,14 @@ loss = forward_back_prop(decoder, decoder_optimizer, criterion, inp, target)
     * num_epochs :the number of iteration to train in order to get near a minimum in the training loss
     * batch_size: large enough to train efficiently, but small enough to fit the data in memory but not to over GPU capacity. tried 64, 128
 All parameters need to be optimized for better performance and efficient computing to fit in the memory, however, I'd like to mention one parameter , sequence_length, since it determine the size of the long range dependencies that a model can learn. The more, the better new sentences look make sense. In practice, to generate sentences from novel, 100 sequence were used/recommended but because of the memory warning , I set it to 10 since average word per line was 5.5/line
+
 ### Model performance 
-The average loss is less than 3.5 
-### Embeddings & Tockenization/Punctuation processing 
- embeddings in neural networks by implementing a word2vec model that converts words into a representative vector of numerical values.
+The loss decreased during training and reached a value lower than 3.5. 
+
+### Improvement 
+* Use validation data to choose the best model
+* Initialize model weights, especially the weights of the embedded layer to encourage model convergence
+* Use topk sampling to generate new words
+
 
 
