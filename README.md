@@ -82,6 +82,7 @@ The loss decreased during training and reached a value lower than 3.5.
 * Use validation data to choose the best model
 * Initialize model weights, especially the weights of the embedded layer to encourage model convergence
 * Use topk sampling to generate new words
+* Generate your own Bach music using like [DeepBach](https://arxiv.org/pdf/1612.01010.pdf) []
 
 
 
